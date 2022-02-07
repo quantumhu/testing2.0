@@ -8,7 +8,7 @@ This document is designed for macOS but should work on any OS.
 
 These instructions outline how to add JDK 8u321 to your Eclipse installation and make it the default JDK. Follow similar instructions if you are using Windows.
 
-1. Install JDK 8u321 from the [GitHub page](http://asd.com)
+1. Install JDK 8u321 from the [GitHub page](./java)
 2. Open Eclipse, go to **Preferences**, go to **Java > Installed JREs**.
 3. Click **Add**. Click **Next**.
 4. Click on **Directory** (top right button).
