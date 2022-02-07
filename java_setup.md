@@ -103,8 +103,10 @@ These instructions outline how to add JDK 8u321 to your Eclipse installation and
 
 #### Running code with Cucumber-Java
 
-1.  In the project file directory, right click on src/test/java and click **New > Folder**. Name it `Features`.
+1.  In the project file directory, right click on `src/test/java` and click **New > Folder**. Name it `Features`.
+ 
 2.  Right click on `src/test/java` and click **New > Package**. Name it however you want.
+ 
 3.  Inside the new package, create a class called `TestRunner`, and paste in the following code:
 ```
 import org.junit.runner.RunWith;
@@ -118,13 +120,16 @@ import io.cucumber.junit.CucumberOptions;
 public class TestRunner {
 }
 ```
-    This is the class that you must press the green play button for. Always use this for Cucumber. It does not quite matter for jqwik.
+> This is the class that you must press the green play button for. ***Always*** use this for Cucumber. 
+ 
 4.  Right click on the `src/test/resources` folder and click **New > File**. Name this file `cucumber.properties`. Paste this line inside:
 ```
 cucumber.publish.quiet=true
 ```
 5.  Right click the `src/test/java/Features` folders and click **New > File**. Name this file however you want, but end it in `.feature`.
+ 
 6.  Double click the new .feature file you created. You will receive a prompt from Eclipse to check for plugins. Say OK. A popup will appear. Install the first plugin you see. It will ask you later if you want to "Install Anyway", just say yes. It will also ask you to restart, and you should.
+ 
 7.  Once back in Eclipse, open the .feature file and paste the following code in:
 ```
 Feature: Is it Friday yet?
@@ -135,6 +140,7 @@ Feature: Is it Friday yet?
     When I ask whether it's Friday yet
     Then I should be told "Nope"
 ```
+ 
 8.  Right click the `src/test/java` folder and create a new class called `MondayTester`. The actual name doesn't matter much in the long run. Paste the following in:
 ```
 import static org.junit.Assert.*;
@@ -168,20 +174,24 @@ public class MondayTester {
     }
 }
 ```
+ 
 9.  Run the Cucumber test code by running the `TestRunner` class.
 
 
 #### Running code with jqwik
 
 1.  Right click on the project, click **New**, click **JUnit Test Case**.
+ 
 2.  At the top select **New Junit Jupiter Test**. Put in a name under “Name”. **Please note, the name you choose must end in "Test"**.
+ 
 3.  There’s going to be a popup about JUnit 5, click OK. At this point, the environment is completely setup.
-
+ 
 4.  Add these imports at the top of the .java file you created:
 ```
 import net.jqwik.api.*;
 import org.assertj.core.api.*;
 ```
+ 
 5.  Replace the code in the class definition with this:
 ```
 @Property
@@ -197,8 +207,10 @@ void lengthOfConcatenatedStringIsGreaterThanLengthOfEach(
     Assertions.assertThat(conc.length()).isGreaterThan(string1.length());
     Assertions.assertThat(conc.length()).isGreaterThan(string2.length());
 }
-```  
+```
+ 
 6.  Finally, to run a test, click on the function header, e.g. *absoluteValueOfAllNumbersIsPositive*, and then press **Run** (the green play button that you normally press to run things in Eclipse).
+ 
 7. You should expect to see errors for both property tests.
 
 ```
