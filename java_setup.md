@@ -175,7 +175,7 @@ public class MondayTester {
 }
 ```
  
-9.  Run the Cucumber test code by running the `TestRunner` class.
+9.  Run the Cucumber test code by running the `TestRunner` class. You should see the JUnit test succeed in the left sidebar.
 
 
 #### Running code with jqwik
