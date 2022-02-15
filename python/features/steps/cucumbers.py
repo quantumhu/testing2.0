@@ -44,7 +44,7 @@ def step_impl(context):
 def step_impl(context):
     test_buying_cucumbers()
 
-@hypothesis_given(integers(), integers())
+@hypothesis_given(integers(min_value=0), integers(min_value=0))
 def test_eating_cucumbers(start, amount):
     assert eat_cucumbers(start, amount) <= start
 
