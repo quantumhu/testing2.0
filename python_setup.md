@@ -19,4 +19,4 @@ This document details how to setup Cucumber and Hypothesis for Python.
 
 ## Local Example
 
-1.  To run the example in this repo, go inside the `features` directory and run the `behave` command.
+1.  To run the example in this repo, go inside the `python/features` directory and run the `behave` command.
