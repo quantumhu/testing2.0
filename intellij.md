@@ -9,7 +9,7 @@ The steps are similar to [Java Testing 2.0 Setup](https://github.com/quantumhu/t
 4. In *GroupID* and enter a name that has format `<something>.<something>`. In *ArtifactID*, type any name.
 5. Chick **Finish**.
 6. In the *Project Menu*, find `pom.xml` under the project you made. Double click to open.
-7. Insert the following lines between *< properties >* and *< /properties >*:
+7. Insert the following lines between `<properties>` and `</properties>`:
 ```
 <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 <jqwik.version>1.6.3</jqwik.version>
@@ -89,7 +89,7 @@ The steps are similar to [Java Testing 2.0 Setup](https://github.com/quantumhu/t
 10. To apply new changes in the build script, click on icon **Load Maven Changes** in the top-right corner of the editor.
 
 ### Appendix
-In **pom.xml**, press `⌘ N`, select **Dependency**. In the pop-up window, use the *Search For Artifact* and search for the following dependencies.
+In **pom.xml**, press `⌘ N`, select **Dependency**. In the pop-up window, use the *Search For Artifact* to search and add the following dependencies. 
 - jqwik
 - junit-jupiter (with version 5.8.2)
 - assertj-core
