@@ -86,7 +86,7 @@ The steps are similar to [Java Testing 2.0 Setup](https://github.com/quantumhu/t
 </build>
 ```
 
-11. To apply new changes in the build script, click on icon **Load Maven Changes** in the top-right corner of the editor.
+10. To apply new changes in the build script, click on icon **Load Maven Changes** in the top-right corner of the editor.
 
 ### Appendix
 In **pom.xml**, press `⌘ N`, select **Dependency**. In the pop-up window, use the *Search For Artifact* and search for the following dependencies.
