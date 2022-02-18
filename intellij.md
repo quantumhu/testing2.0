@@ -8,7 +8,7 @@ The steps are similar to [Java Testing 2.0 Setup](https://github.com/quantumhu/t
 3. Clcik **Next**.
 4. In *GroupID* and enter a name that has format `<something>.<something>`. In *ArtifactID*, type any name.
 5. Chick **Finish**.
-6. In the *Project Menu*, find `pox.ml` under the project you made. Double click to open.
+6. In the *Project Menu*, find `pom.xml` under the project you made. Double click to open.
 7. Insert the following lines between *< properties >* and *< /properties >*:
 ```
 <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
