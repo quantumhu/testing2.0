@@ -116,7 +116,8 @@ import io.cucumber.junit.CucumberOptions;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(
-		features="src/test/java/Features")
+		features="src/test/java/Features",
+		plugin = { "pretty" })
 public class TestRunner {
 }
 ```
