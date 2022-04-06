@@ -1,4 +1,4 @@
-# Java Testing 2.0 Setup
+# Java Setup - Eclipse
 
 This document details how to setup Cucumber and jqwik on Eclipse.
 
