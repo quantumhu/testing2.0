@@ -2,6 +2,9 @@
 This document is an supporting document to [Java Testing 2.0 Setup](https://github.com/quantumhu/testing2.0/blob/main/java_setup.md#java-testing-20-setup) and details how to setup Cucumber and jqwik on **IntelliJ**.
 The steps are similar to [Java Testing 2.0 Setup](https://github.com/quantumhu/testing2.0/blob/main/java_setup.md#java-testing-20-setup) setup for Eclipse.
 *This document is designed for macOS but should work on any OS.*
+
+**Make sure you have Java 8 installed first. You can get an installer from our [repo](/java-installer).**
+
 ## jqwik + Cucumber pre-setup
 1. Open IntelliJ
 2. Click on **Projects** on the menu on the left. Click **New Project > Maven**. Unchecked check-box  *Create from archetype* if it is checked.
