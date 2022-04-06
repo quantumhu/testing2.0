@@ -8,8 +8,8 @@ The steps are similar to [Java Testing 2.0 Setup](https://github.com/quantumhu/t
 ## jqwik + Cucumber pre-setup
 1. Open IntelliJ
 2. Click on **Projects** on the menu on the left. Click **New Project > Maven**. Uncheck the check-box *Create from archetype* if it is checked. Make sure to select Java 8 (1.8) as your Project SDK.
-3. Clcik **Next**.
-4. In *GroupID* and enter a name that has format `<something>.<something>`. In *ArtifactID*, type any name.
+3. Click **Next**.
+4. Expand *Artifact Coordinates*. In *GroupID* and enter a name that has format `<something>.<something>`. In *ArtifactID*, type any name.
 5. Chick **Finish**.
 6. In the *Project Menu*, find `pom.xml` under the project you made. Double click to open.
 7. Insert the following lines between `<properties>` and `</properties>`:
@@ -89,7 +89,7 @@ The steps are similar to [Java Testing 2.0 Setup](https://github.com/quantumhu/t
 </build>
 ```
 
-10. To apply new changes in the build script, click on icon **Load Maven Changes** in the top-right corner of the editor.
+10. To apply new changes in the build script, click on icon **Load Maven Changes**. It should be a floating icon in the top right of the screen, around the end of lines 3 and 4 on pom.xml.
 
 ### Appendix
 In **pom.xml**, press `⌘ N`, select **Dependency**. In the pop-up window, use the *Search For Artifact* to search and add the following dependencies. 
