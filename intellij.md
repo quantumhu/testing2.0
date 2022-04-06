@@ -7,7 +7,7 @@ The steps are similar to [Java Testing 2.0 Setup](https://github.com/quantumhu/t
 
 ## jqwik + Cucumber pre-setup
 1. Open IntelliJ
-2. Click on **Projects** on the menu on the left. Click **New Project > Maven**. Unchecked check-box  *Create from archetype* if it is checked.
+2. Click on **Projects** on the menu on the left. Click **New Project > Maven**. Uncheck the check-box *Create from archetype* if it is checked. Make sure to select Java 8 (1.8) as your Project SDK.
 3. Clcik **Next**.
 4. In *GroupID* and enter a name that has format `<something>.<something>`. In *ArtifactID*, type any name.
 5. Chick **Finish**.
