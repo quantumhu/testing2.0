@@ -6,9 +6,9 @@ This document details how to setup Cucumber and jqwik on Eclipse.
 
 ## macOS specific JDK setup
 
-These instructions outline how to add JDK 8u321 to your Eclipse installation and make it the default JDK. Follow similar instructions if you are using Windows.
+These instructions outline how to add JDK 8u321 to your Eclipse installation and make it the default JDK. Follow similar instructions if you are using Windows. Java 8 is also known as Java 1.8. If you already have Java 8 installed, you might be able to use it as-is.
 
-1. Install JDK 8u321 from this [GitHub page](./java)
+1. Install JDK 8u321 from this [GitHub page](./java-installer)
 2. Open Eclipse, go to **Preferences**, go to **Java > Installed JREs**.
 3. Click **Add**. Click **Next**.
 4. Click on **Directory** (top right button).
@@ -31,7 +31,7 @@ These instructions outline how to add JDK 8u321 to your Eclipse installation and
 7.  Click **Finish**.
 8.  In the *Package Explorer*, find `pom.xml` under the project you made. Double click to open.
 9.  Paste the following in before the last line:
-```
+```xml
 <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.8</maven.compiler.source>
@@ -108,7 +108,7 @@ These instructions outline how to add JDK 8u321 to your Eclipse installation and
 2.  Right click on `src/test/java` and click **New > Package**. Name it however you want.
  
 3.  Inside the new package, create a class called `TestRunner`, and paste in the following code:
-```
+```java
 import org.junit.runner.RunWith;
 
 import io.cucumber.junit.Cucumber;
@@ -121,7 +121,7 @@ import io.cucumber.junit.CucumberOptions;
 public class TestRunner {
 }
 ```
-> This is the class that you must press the green play button for. ***Always*** use this for Cucumber. 
+--> This is the class that you must press the green play button for. ***Always*** use this for Cucumber. 
  
 4.  Right click on the `src/test/resources` folder and click **New > File**. Name this file `cucumber.properties`. Paste this line inside:
 ```
@@ -132,7 +132,7 @@ cucumber.publish.quiet=true
 6.  Double click the new .feature file you created. You will receive a prompt from Eclipse to check for plugins. Say OK. A popup will appear. Install the first plugin you see. It will ask you later if you want to "Install Anyway", just say yes. It will also ask you to restart, and you should.
  
 7.  Once back in Eclipse, open the .feature file and paste the following code in:
-```
+```gherkin
 Feature: Is it Friday yet?
   Everybody wants to know when it's Friday
 
@@ -143,7 +143,7 @@ Feature: Is it Friday yet?
 ```
  
 8.  Right click the `src/test/java` folder and create a new class called `MondayTester`. The actual name doesn't matter much in the long run. Paste the following in:
-```
+```java
 import static org.junit.Assert.*;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -188,13 +188,13 @@ public class MondayTester {
 3.  There’s going to be a popup about JUnit 5, click OK. At this point, the environment is completely setup.
  
 4.  Add these imports at the top of the .java file you created:
-```
+```java
 import net.jqwik.api.*;
 import org.assertj.core.api.*;
 ```
  
 5.  Replace the code in the class definition with this:
-```
+```java
 @Property
 boolean absoluteValueOfAllNumbersIsPositive(@ForAll int anInteger) {
     return Math.abs(anInteger) >= 0;
