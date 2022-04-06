@@ -25,7 +25,7 @@ I use the term "bag", but in jqwik, it will actually be called an "Arbitrary", b
 This takes a function `func` and applies it to every item in `bag`. The difference between this and a normal scenario is that you never access the items directly (i.e. for i = 0; i < length; i++, bag\[i\]).
 
 __Example__: Generate a 5 digit number that is a string.
-```
+```java
 @Provide 
 Arbitrary<String> fiveDigitStrings() {
   return Arbitraries.integers(10000, 99999).map(aNumber -> String.valueOf(aNumber));
@@ -39,7 +39,7 @@ Arbitrary<String> fiveDigitStrings() {
 This takes a boolean filter, and applies the filter to `bag`. `bag` will end up containing only the items that cause `bool` to be true. For example, to filter the bag of all integers to *contain* only even numbers (or *filter out* all odd numbers, however you want to think about it).
 
 __Example__: Keep only even numbers
-```
+```java
 @Provide 
 Arbitrary<Integer> oddNumbers() {
   return Arbitraries.integers().filter(aNumber -> aNumber % 2 != 0);
@@ -53,7 +53,7 @@ Arbitrary<Integer> oddNumbers() {
 In the case of object oriented programming, you might have several attributes connected to an object. How can you generate test data for these? It is **very important** that you use generators for all parts of your data if you want the benefits of shrinking. By combining bags of data, you can end up with a resultant bag of desired test data. Imagine these bags are infinite and if you want to keep being able to draw data, you need to use infinite bags everywhere!
 
 __Example__: Create a Person object, with a `name` of certain length, and `age` of certain size. This can create Person objects with varying properties, *AND* the Person data can be shrunk.
-```
+```java
 @Provide
 Arbitrary<Person> validPeople() {
     Arbitrary<String> names = Arbitraries.strings().withCharRange('a', 'z')
@@ -71,7 +71,7 @@ This is a technique in which the use case is not immediately clear for. Sometime
 
 __Example__: The generator below creates a list of any size, as long as the length of the strings inside are the same length as every other string in the list.
 
-```
+```java
 @Provide
 Arbitrary<List<String>> listsOfEqualSizedStrings() {
     Arbitrary<Integer> integers2to5 = Arbitraries.integers().between(2, 5);
@@ -100,11 +100,12 @@ This is output from the above flatMap function.
 
 If you are thinking that this could be easily implemented another way, you think just like me! **BIG DISCLAIMER**, the creator of jqwik highly recommends **against** doing it like below. I also highly recommend against it! So, if you begin to create code like below, you should use flatMap instead. 
 
-```
+```java
 @Provide
 Arbitrary<List<String>> badListsOfEqualSizedStrings() {
 
-    // randomly generate a list of ints that the string length could be, between 2 and 5 (inclusive). it does NOT necessarily include all possible values in a given run
+    // randomly generate a list of ints that the string length could be, between 2 and 5 (inclusive).
+    // it does NOT necessarily include all possible values in a given run
     List<Integer> values = Arbitraries.integers().between(2, 5).list().sample();
 
     // remove duplicates in values list
@@ -131,7 +132,7 @@ The above function is rather complicated because it needs to be able to generate
 If you want to do probability, jqwik has ways to do it! 
 
 Simply use `frequency` and provide the options with a number that is the numerator, and the sum is the denominator. Below, the probabilities are 4/7, 2/7 and 1/7 respectively.
-```
+```java
 Arbitrary<Action.TYPE> actionType = Arbitraries.frequency(
     Tuple.of(4, Action.TYPE.INSERT),
     Tuple.of(2, Action.TYPE.SELECT),
@@ -140,7 +141,7 @@ Arbitrary<Action.TYPE> actionType = Arbitraries.frequency(
 ```
 
 __*Disclaimer: Bad Code*__ A not-very-good way of doing probability would be to filter based on a random number. The below code will select an INSERT action, a SELECT action, or a RETURN action 25% of the time. This is bad because jqwik has to calculate and then discard results 75% of the time if it is RETURN, whereas using `frequency` will encode the probability into the generation.
-```
+```java
 import java.util.Random;
 Random random = new Random();
 Arbitrary<Action.TYPE> actionType = Arbitraries.of(Action.TYPE.values()).filter(aType -> {
@@ -152,11 +153,11 @@ Arbitrary<Action.TYPE> actionType = Arbitraries.of(Action.TYPE.values()).filter(
 
 Sometimes you need to generate JSON or other recursive structures. JSON is recursive because it can contain lists of lists, or dictionaries of dictionaries, lists of dictionaries, etc.
 
-However, with jqwik, I haven't been able to come up with a way to generate JSON easily. Their "recursive" method is sort of what you expect from a recursive function that you code, it does one thing until it encounters a base case and stops (glorified loop).
+With jqwik, I haven't been able to come up with a way to generate JSON easily. Their "recursive" method is sort of what you expect from a recursive function that you code, it does one thing until it encounters a base case and stops (glorified loop).
 
-However, with Hypothesis, generating JSON is much easier, and is done in a way akin to Context Free Grammars.
+*However*, with Hypothesis, generating JSON is much easier, and is done in a way akin to Context Free Grammars.
 
-```
+```python
 from hypothesis import given
 from hypothesis import strategies as st
 from string import printable
@@ -179,7 +180,7 @@ The output looks like this:
 
 You can also limit the number of elements (text, integers, lists, etc.) by using `max_leaves`.
 
-```
+```python
 json = st.recursive(
         st.none() | st.booleans() | st.floats() | st.text(printable),
         lambda children: st.lists(children) | st.dictionaries(st.text(printable), children), max_leaves=8
