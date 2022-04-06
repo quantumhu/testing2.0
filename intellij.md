@@ -10,14 +10,14 @@ The steps are similar to [Java Testing 2.0 Setup](https://github.com/quantumhu/t
 5. Chick **Finish**.
 6. In the *Project Menu*, find `pom.xml` under the project you made. Double click to open.
 7. Insert the following lines between `<properties>` and `</properties>`:
-```
+```xml
 <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 <jqwik.version>1.6.3</jqwik.version>
 <assertj.version>3.22.0</assertj.version>
 <cucumber.version>7.0.0</cucumber.version>
 ```
 8. Paste the following after `</properties>`:
-```
+```xml
 <dependencies>
     <dependency>
         <groupId>net.jqwik</groupId>
@@ -54,7 +54,7 @@ The steps are similar to [Java Testing 2.0 Setup](https://github.com/quantumhu/t
    ***if you want to add dependencies step by step, see appendix down below in the same section.***
 
 9. Paste the following in after the last `</dependencies>`:
-```
+```xml
 <build>
     <plugins>
         <plugin>
@@ -96,12 +96,12 @@ In **pom.xml**, press `⌘ N`, select **Dependency**. In the pop-up window, use 
 - cucumber-java (replace version code line with `<version>${cucumber.version}</version>`)
 - cucumber-junit (replace version code line with `<version>${cucumber.version}</version>`)
 
-## Running Code with  Cucumber-Java
+## Running Code with Cucumber-Java
 1. In the project file directory, right click on `src/test` to create a new directory called `resources`. Now you will have a new created directory `src/test/resources`.
 2. Right click on the `resources` folder and click **Mark directory as > Test Resources Root**.
 3. In the project file directory, right click on `src/test/java` and click **New>Package**. Name the new package the name you want.
 4. Right click on the new package, select **New > Java Class** to create a class called `TestRunner`, and paste in the following code:
-```
+```java
 import org.junit.runner.RunWith;
 
 import io.cucumber.junit.Cucumber;
@@ -116,7 +116,7 @@ public class TestRunner {
 ```
 5. Right click on the `src/test/java/resources` folder and click **New > File**. Name this file however you want but end it in `.feature` *(extension)*. A pop-up window might show up to ask if the extension is wanted. Press **OK**.
 6. Double click the new .feature file you created to open the `.feature` file. Paste the following code in:
-```
+```gherkin
 Feature: Is it Friday yet?
   Everybody wants to know when it's Friday
 
@@ -126,7 +126,7 @@ Feature: Is it Friday yet?
     Then I should be told "Nope"
 ```
 7.  Right click the  `src/test/java/<your new created package name>`  folder and create a new class called  `MondayTester`. The actual name doesn't matter much in the long run. Paste the following in:
-```
+```java
 import static org.junit.Assert.*;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -163,12 +163,12 @@ public class MondayTester {
 ## Running code with jqwik
 1. Right click the  `src/test/java/<your new created package name>`  folder and create a new Java class. Name it however you want but **the name must end with "Test"**.
 2. Add imports at the top of the java class file:
-```
+```java
 import net.jqwik.api.*;
 import org.assertj.core.api.*;
 ```
 3. Paste the following code in the class:
-```
+```java
 @Property
 boolean absoluteValueOfAllNumbersIsPositive(@ForAll int anInteger) {
     return Math.abs(anInteger) >= 0;
