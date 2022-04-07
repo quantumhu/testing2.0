@@ -11,3 +11,5 @@
 ._*
 
 .hypothesis/
+__pycache__/
+.idea/
