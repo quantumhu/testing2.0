@@ -48,6 +48,7 @@ Arbitrary<Integer> oddNumbers() {
 
 ### Combine ###
   `Combinators.combine(anArbitrary [, anotherArbitrary+ ] ).as((aThing, [, anotherThing+ ]) -> func);`
+<br>&nbsp;&nbsp;&nbsp;&nbsp; `[]` indicates optional arguments, `+` indicates 1 or more
 
 In the case of object oriented programming, you might have several attributes connected to an object. How can you generate test data for these? It is **very important** that you use generators for all parts of your data if you want the benefits of shrinking. By combining bags of data, you can end up with a resultant bag of desired test data. Imagine these bags are infinite and if you want to keep being able to draw data, you need to use infinite bags everywhere!
 
