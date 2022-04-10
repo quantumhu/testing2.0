@@ -1,7 +1,7 @@
 # What is the point of using jqwik's data generators? #
 We could just use random value generation whenever needed. 
 
-There are a few main benefits when using jqwik:
+There are a few main benefits when using data generators:
 - The results are **reproducible** so you can figure out exactly which values caused the test failure, or simply re-do it after making some changes. jqwik will automatically use the random number seed associated with the last time that the test property failed. You could keep track of these random number seeds yourself but this introduces human error.
 - **Shrinking** of test values can be done, which reduces the inputs to a minimum viable set of inputs to cause a test failure. A simple test case is a valuable debugging tool.
 - Generation of test data is **automatic and diverse**. You only need to specify what data types the inputs can be, and optional information for restricting the generated inputs. If the framework to do this already exists, what is the need for reinventing the wheel?
