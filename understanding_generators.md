@@ -1,28 +1,27 @@
 # What is the point of using jqwik's data generators? #
 We could just use random value generation whenever needed. 
 
-There are a few main benefits when using jqwik:
+There are a few main benefits when using data generators:
 - The results are **reproducible** so you can figure out exactly which values caused the test failure, or simply re-do it after making some changes. jqwik will automatically use the random number seed associated with the last time that the test property failed. You could keep track of these random number seeds yourself but this introduces human error.
-- **Shrinking** of test values can be done, which reduces the inputs to a minimum viable set of inputs to cause a test failure. A simple test case is a valuable debugging tool.
+- **Shrinking** of test values can be done, which reduces the inputs to a minimum viable set of inputs to cause a test failure. A straightforward test case is a valuable debugging tool.
 - Generation of test data is **automatic and diverse**. You only need to specify what data types the inputs can be, and optional information for restricting the generated inputs. If the framework to do this already exists, what is the need for reinventing the wheel?
 
 There is, however, a slight learning curve with jqwik's data generators. It is not complicated, but it is a different paradigm than most people are used to. 
 
 Imagine you are trying to process data from a file. In a "normal" scenario, you might be given a flatfile with names on each line. You would simply loop through each line of the file (i.e. file\[i\]). Basically, you are given a "bag" of data, and you can directly operate on each of the items in the bag. For purposes of illustration, this will be called "individual access."
 
-With jqwik's data generators, you have this same bag of data, except you cannot directly operate on each of the items in the bag. You must do operations on the whole bag. This is similar to the idea of dataflow programming or functional programming. For purposes of illustration, this will be called "group access."
+With jqwik's data generators, you have this same bag of data, except you cannot directly operate on each of the items in the bag. You must do operations on the whole bag. This is similar to the idea of dataflow programming or monads in functional programming. For purposes of illustration, this will be called "group access."
 
-There are several important operations to know:
-
-The arrow notation is a way of saying, whatever is in the bag will be given a temporary name so we can refer to it. Once it has a name, we can use it to be specific about our filtering. Let's say we have a bag of integers from 1 to 9. With individual access, each of these integers have "names". 1 is bag\[0\], 2 is bag\[1\], etc. The integer 1 has a unique name within the bag. With group access, anything pulled out of the bag is one kind of thing, but has no name, it is simply "a number". This will make more sense after seeing some examples.
+The arrow notation `->` is a way of saying, whatever is in the bag will be given a temporary name so we can refer to it. Once it has a name, we can use it to be specific about our filtering. Let's say we have a bag of integers from 1 to 9. With individual access, each of these integers have "names". 1 is bag\[0\], 2 is bag\[1\], etc. The integer 1 has a unique name within the bag. With group access, anything pulled out of the bag is one kind of thing, but has no name, it is simply "a number". This will make more sense after seeing some examples.
 
 I use the term "bag", but in jqwik, it will actually be called an "Arbitrary", basically meaning an arbitrary set of things (i.e. a bag of things). All these generators are tagged with `@Provide` at the top of the function. The function name is how you refer to a specific generator when you want to test a Property.
 
+There are several important operations to know:
 
 ### Map ###
   `bag.map(aThing -> func)`
 
-This takes a function `func` and applies it to every item in `bag`. The difference between this and a normal scenario is that you never access the items directly (i.e. for i = 0; i < length; i++, bag\[i\]).
+This takes a function `func` and applies it to every item in `bag`. The difference between this and individual access is that you never access the items directly (i.e. for i = 0; i < length; i++, bag\[i\]).
 
 __Example__: Generate a 5 digit number that is a string.
 ```java
@@ -49,6 +48,7 @@ Arbitrary<Integer> oddNumbers() {
 
 ### Combine ###
   `Combinators.combine(anArbitrary [, anotherArbitrary+ ] ).as((aThing, [, anotherThing+ ]) -> func);`
+<br>&nbsp;&nbsp;&nbsp;&nbsp; `[]` indicates optional arguments, `+` indicates 1 or more
 
 In the case of object oriented programming, you might have several attributes connected to an object. How can you generate test data for these? It is **very important** that you use generators for all parts of your data if you want the benefits of shrinking. By combining bags of data, you can end up with a resultant bag of desired test data. Imagine these bags are infinite and if you want to keep being able to draw data, you need to use infinite bags everywhere!
 
@@ -67,9 +67,9 @@ Arbitrary<Person> validPeople() {
 
 ### Flat Mapping ###
 
-This is a technique in which the use case is not immediately clear for. Sometimes, you want to use a drawn value from a generator (Arbitrary) to create another generator / Arbitrary. An example of this is Just know when you want a feature like this, then you __*should*__ use flat mapping.
+This is a technique in which the use case is not immediately clear for. Sometimes, you want to use a drawn value from a generator (Arbitrary) to create another generator / Arbitrary. Just know when you want a feature like this, then you __*should*__ use flat mapping.
 
-__Example__: The generator below creates a list of any size, as long as the length of the strings inside are the same length as every other string in the list.
+__Example__: The generator below creates a list of any size, as long as the length of the strings in the list are the same length as every other string in the list.
 
 ```java
 @Provide
@@ -98,7 +98,7 @@ This is output from the above flatMap function.
 [yqfpd, fdzfi, cwciz, pxbgk, utwdm, mlljf, zzzzz, aqybv, pgrsi, jvrjy, nhpyv, gvlth, pynif, ynlrp, yustd, yslnb, zjjaw, aaaaa]
 ```
 
-If you are thinking that this could be easily implemented another way, you think just like me! **BIG DISCLAIMER**, the creator of jqwik highly recommends **against** doing it like below. I also highly recommend against it! So, if you begin to create code like below, you should use flatMap instead. 
+If you are thinking that this could be easily implemented another way, you think just like me! **BIG DISCLAIMER**, don't do this! If you begin to create code like below, that is a sign that you should use flatMap instead. 
 
 ```java
 @Provide
@@ -140,7 +140,7 @@ Arbitrary<Action.TYPE> actionType = Arbitraries.frequency(
 );
 ```
 
-__*Disclaimer: Bad Code*__ A not-very-good way of doing probability would be to filter based on a random number. The below code will select an INSERT action, a SELECT action, or a RETURN action 25% of the time. This is bad because jqwik has to calculate and then discard results 75% of the time if it is RETURN, whereas using `frequency` will encode the probability into the generation.
+__*Disclaimer: Bad Code*__ A not-very-good way of doing probability would be to filter based on a random number. The below code will select an INSERT action, a SELECT action, or a RETURN action 25% of the time. Though for illustration purposes, it is possible!
 ```java
 import java.util.Random;
 Random random = new Random();
@@ -153,7 +153,7 @@ Arbitrary<Action.TYPE> actionType = Arbitraries.of(Action.TYPE.values()).filter(
 
 Sometimes you need to generate JSON or other recursive structures. JSON is recursive because it can contain lists of lists, or dictionaries of dictionaries, lists of dictionaries, etc.
 
-With jqwik, I haven't been able to come up with a way to generate JSON easily. Their "recursive" method is sort of what you expect from a recursive function that you code, it does one thing until it encounters a base case and stops (glorified loop).
+With jqwik, I haven't been able to come up with a way to generate JSON easily. Their "recursive" method is sort of what you expect from a recursive function, it does one thing until it encounters a base case and stops (glorified loop).
 
 *However*, with Hypothesis, generating JSON is much easier, and is done in a way akin to Context Free Grammars.
 
@@ -169,13 +169,19 @@ json = st.recursive(
 pprint(json.example())
 ```
 
-The output looks like this:
+The code says that the json created could include None elements, booleans, floats, printable text. But for each level going down, it must be a list containing the previously mentioned elements, or a dictionary containing the previously mentioned elements.
+
+The output looks like this (after being formatted nicely):
 ```
-{'de(l': None,
- 'nK': {'(Rt)': None,
-        '+hoZh1YU]gy8': True,
-        '8z]EIFA06^li^': 'LFE{Q',
-        '9,': 'l{cA=/'}}
+{
+  'de(l': None,
+  'nK': {
+    '(Rt)': None,
+    '+hoZh1YU]gy8': True,
+    '8z]EIFA06^li^': 'LFE{Q',
+    '9,': 'l{cA=/'
+  }
+}
 ```
 
 You can also limit the number of elements (text, integers, lists, etc.) by using `max_leaves`.
@@ -190,6 +196,4 @@ json = st.recursive(
 ```
 {'"x9eS+D-+si\'': {}}
 ```
-
-My general recommendation is to use Java and jqwik with IntelliJ at the beginning, and to avoid Hypothesis (Python). In most cases, Java is superior because variables are statically-typed. The jqwik library shows you what types each function returns. This is helpful tool to get an understanding of the various functionalities of Property-based Testing implemented by jqwik.
-
+(this generation just happened to not generate as many leaves as 8)
