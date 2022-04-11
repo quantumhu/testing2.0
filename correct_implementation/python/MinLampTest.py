@@ -131,11 +131,15 @@ class Tests(unittest.TestCase):
         # if turn on all the light of given lamps, it shall cover all the area  
 
         # lamp_lights = min_lamp.min_lamp_solution(r) # return a list of index 
-        lamp_lights = min_lamp.min_lamp_solution(r) # incorrect_min_lamp
+        lamp_lights = min_lamp.min_lamp_solution(r) # incorrect_min_lamp min_lamp_solution
         
         if lamp_lights!=None: 
+            for lamp_on in lamp_lights: # lamp_on is index 
+                self.assertTrue(lamp_on <= len(r)-1) # out of index 
+
             max_light = 0 
             for lamp_on in lamp_lights: # lamp_on is index 
+                
                 if lamp_lights.index(lamp_on) == 0:
                     if (lamp_on - r[lamp_on] <= 0): # first index 
                         max_light = lamp_on + r[lamp_on] # location + light
@@ -170,7 +174,7 @@ class Tests(unittest.TestCase):
         
         if 0 in end_r: # if there is zero, shall return None 
             # print(r, end_r) 
-            self.assertEqual(min_lamp.min_lamp_solution(r), None)
+            self.assertEqual(min_lamp.incorrect_min_lamp(r), None)
 
     
     @given(st.lists(
